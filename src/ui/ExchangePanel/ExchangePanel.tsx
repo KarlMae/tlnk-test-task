@@ -1,4 +1,5 @@
 import { CurrencySelect } from '../CurrencySelect/CurrencySelect'
+import { LastUpdated } from '../LastUpdated/LastUpdated'
 
 interface Props {
   readonly currencies: readonly string[]
@@ -49,11 +50,7 @@ export function ExchangePanel({
         {isFetching ? (
           <span>Loading…</span>
         ) : (
-          quoteCreatedAt && (
-            <span data-testid="updated-at">
-              Last updated {quoteCreatedAt.split('T')[1].slice(0, 8)}
-            </span>
-          )
+          quoteCreatedAt && <LastUpdated updatedAt={quoteCreatedAt} />
         )}
         <button type="button" data-testid="refresh" onClick={onRefresh}>
           ⟳
