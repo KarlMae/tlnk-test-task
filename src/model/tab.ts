@@ -1,1 +1,4 @@
-export type Tab = 'exchange' | 'history'
+export enum Tab {
+  Exchange = 'exchange',
+  History = 'history',
+}

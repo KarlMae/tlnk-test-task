@@ -1,21 +1,19 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import classNames from 'classnames'
 import { HistoryRow, Keypad } from './ui'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
-import type { HistoryRecord, Tab } from './model'
+import { KeypadKey, Tab, type HistoryRecord } from './model'
 import { useQuoteQuery, useRatesQuery } from './api'
 import styles from './App.module.css'
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>('exchange')
+  const [tab, setTab] = useState<Tab>(Tab.Exchange)
   const [amount, setAmount] = useState('0')
   const [selectedFrom, setFrom] = useState<string>()
   const [selectedTo, setTo] = useState<string>()
   const [history, setHistory] = useState<HistoryRecord[]>(initialHistory)
   const [selected, setSelected] = useState(0)
-
-  const tableRef = useRef<HTMLTableElement>(null)
 
   const ratesQuery = useRatesQuery()
   const currencies = ratesQuery.data?.currencies ?? []
@@ -28,75 +26,64 @@ export default function App() {
   const quote = quoteQuery.data
   const result = quote ? formatMoney(convert(quote.amount, quote.rate)) : '0'
 
-  useEffect(() => {
-    const table = tableRef.current
-    if (!table) return
-
-    const handler = (e: MouseEvent) => {
-      const label = (e.target as HTMLElement).innerText
-
-      switch (label) {
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '00':
-          setAmount((prev) => (prev === '0' ? label : prev + label))
-          break
-        case '.':
-          setAmount((prev) => (prev.includes('.') ? prev : `${prev}.`))
-          break
-        case '⌫':
-          if (tab === 'exchange') {
-            setAmount((prev) => (prev.length > 1 ? prev.slice(0, -1) : '0'))
-          } else {
-            setHistory((prev) => prev.filter((_, i) => i !== selected))
-          }
-          break
-        case 'C':
-          if (tab === 'exchange') {
-            setAmount('0')
-          } else {
-            setHistory([])
-          }
-          break
-        case 'm':
-          if (tab === 'exchange') {
-            setHistory((prev) => [
-              ...prev,
-              { from, to, amount: formatMoney(parseAmount(amount)), result },
-            ])
-          }
-          break
-        case '▲':
-          setSelected((prev) => Math.max(0, prev - 1))
-          break
-        case '▼':
-          setSelected((prev) => Math.min(history.length - 1, prev + 1))
-          break
-        case 'OK': {
-          const record = history[selected]
-          if (record) {
-            setFrom(record.from)
-            setTo(record.to)
-            setAmount(record.amount)
-            setTab('exchange')
-          }
-          break
+  const handleKeyPress = (key: KeypadKey) => {
+    switch (key) {
+      case KeypadKey.Zero:
+      case KeypadKey.One:
+      case KeypadKey.Two:
+      case KeypadKey.Three:
+      case KeypadKey.Four:
+      case KeypadKey.Five:
+      case KeypadKey.Six:
+      case KeypadKey.Seven:
+      case KeypadKey.Eight:
+      case KeypadKey.Nine:
+      case KeypadKey.DoubleZero:
+        setAmount((prev) => (prev === '0' ? key : prev + key))
+        break
+      case KeypadKey.Dot:
+        setAmount((prev) => (prev.includes('.') ? prev : `${prev}.`))
+        break
+      case KeypadKey.Backspace:
+        if (tab === Tab.Exchange) {
+          setAmount((prev) => (prev.length > 1 ? prev.slice(0, -1) : '0'))
+        } else {
+          setHistory((prev) => prev.filter((_, i) => i !== selected))
         }
-        default:
-          break
+        break
+      case KeypadKey.Clear:
+        if (tab === Tab.Exchange) {
+          setAmount('0')
+        } else {
+          setHistory([])
+        }
+        break
+      case KeypadKey.Save:
+        if (tab === Tab.Exchange) {
+          setHistory((prev) => [
+            ...prev,
+            { from, to, amount: formatMoney(parseAmount(amount)), result },
+          ])
+        }
+        break
+      case KeypadKey.Up:
+        setSelected((prev) => Math.max(0, prev - 1))
+        break
+      case KeypadKey.Down:
+        setSelected((prev) => Math.min(history.length - 1, prev + 1))
+        break
+      case KeypadKey.Ok: {
+        const record = history[selected]
+        if (record) {
+          setFrom(record.from)
+          setTo(record.to)
+          setAmount(record.amount)
+          setTab(Tab.Exchange)
+        }
+        break
       }
     }
-
-    table.addEventListener('click', handler)
-  }, [tab])
+  }
 
   return (
     <div>
@@ -104,22 +91,22 @@ export default function App() {
         <button
           type="button"
           data-testid="tab-exchange"
-          onClick={() => setTab('exchange')}
-          className={classNames(styles.tab, { [styles.selected]: tab === 'exchange' })}
+          onClick={() => setTab(Tab.Exchange)}
+          className={classNames(styles.tab, { [styles.selected]: tab === Tab.Exchange })}
         >
           Exchange Rate
         </button>
         <button
           type="button"
           data-testid="tab-history"
-          onClick={() => setTab('history')}
-          className={classNames(styles.tab, { [styles.selected]: tab === 'history' })}
+          onClick={() => setTab(Tab.History)}
+          className={classNames(styles.tab, { [styles.selected]: tab === Tab.History })}
         >
           History
         </button>
       </div>
 
-      {tab === 'exchange' && (
+      {tab === Tab.Exchange && (
         <div>
           <div>
             <select
@@ -166,7 +153,7 @@ export default function App() {
         </div>
       )}
 
-      {tab === 'history' && (
+      {tab === Tab.History && (
         <div>
           <ul>
             {history.map((record, i) => (
@@ -177,7 +164,7 @@ export default function App() {
         </div>
       )}
 
-      <Keypad ref={tableRef} tab={tab} />
+      <Keypad tab={tab} onKeyPress={handleKeyPress} />
     </div>
   )
 }
