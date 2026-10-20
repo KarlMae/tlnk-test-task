@@ -1,4 +1,4 @@
-import { ApiClient } from '../../model'
+import type { ApiClient } from '../../model'
 import { ApiError } from '../../model'
 
 const API_BASE_URL = '/api'

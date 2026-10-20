@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { HistoryRow, Keypad } from './ui'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
-import { HistoryRecord, Tab } from './model'
+import type { HistoryRecord, Tab } from './model'
 import { useQuoteQuery, useRatesQuery } from './api'
 import styles from './App.module.css'
 

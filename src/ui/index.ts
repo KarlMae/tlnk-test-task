@@ -1,2 +1,2 @@
-export * from './HistoryRow/HistoryRow.tsx'
-export * from './Keypad/Keypad.tsx'
+export * from './HistoryRow/HistoryRow'
+export * from './Keypad/Keypad'

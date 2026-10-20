@@ -1,4 +1,4 @@
 import { useMemo } from 'react'
-import { createHttpClient } from '../clients/apiClient.ts'
+import { createHttpClient } from '../clients/apiClient'
 
 export const useApiClient = () => useMemo(() => createHttpClient(), [])

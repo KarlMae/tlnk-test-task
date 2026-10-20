@@ -1,3 +1,3 @@
-export * from './clients/apiClient.ts'
-export * from './clients/queryClient.ts'
-export * from './hooks/useApiClient.ts'
+export * from './clients/apiClient'
+export * from './clients/queryClient'
+export * from './hooks/useApiClient'

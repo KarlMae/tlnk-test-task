@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { useApiClient } from '../../data-access'
-import { ApiClient } from '../../model'
-import { RatesResponse } from './rates.types.ts'
-import { ratesKeys } from './ratesKeys.ts'
+import type { ApiClient } from '../../model'
+import type { RatesResponse } from './rates.types'
+import { ratesKeys } from './ratesKeys'
 
 const getRates = (client: ApiClient) => client.get<RatesResponse>('rates')
 

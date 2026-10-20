@@ -15,6 +15,9 @@ export default defineConfig([
   {
     files: ['**/*.{ts,tsx}'],
     extends: [tseslint.configs.recommended],
+    rules: {
+      '@typescript-eslint/consistent-type-imports': ['error', { disallowTypeAnnotations: false }],
+    },
   },
   {
     files: ['src/**/*.{ts,tsx}'],

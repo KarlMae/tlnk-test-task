@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import classNames from 'classnames'
-import { HistoryRecord } from '../../model'
+import type { HistoryRecord } from '../../model'
 import styles from './HistoryRow.module.css'
 
 function formatRecord(record: HistoryRecord): string {

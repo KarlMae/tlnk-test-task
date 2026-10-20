@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { KeypadButton, KeypadProps } from '../../model'
+import type { KeypadButton, KeypadProps } from '../../model'
 import styles from './Keypad.module.css'
 
 const ROWS: KeypadButton[][] = [

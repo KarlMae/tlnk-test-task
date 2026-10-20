@@ -1,4 +1,4 @@
-import { QuoteRequest } from './quote.types.ts'
+import type { QuoteRequest } from './quote.types'
 
 export const quoteKeys = {
   all: () => ['quote'] as const,

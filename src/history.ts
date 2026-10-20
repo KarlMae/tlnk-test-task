@@ -1,4 +1,4 @@
-import { HistoryRecord } from './model'
+import type { HistoryRecord } from './model'
 
 export const initialHistory: HistoryRecord[] = [
   { from: 'USD', to: 'EUR', amount: '1,000', result: '922.25' },
