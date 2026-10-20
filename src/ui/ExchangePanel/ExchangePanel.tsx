@@ -1,3 +1,5 @@
+import { CurrencySelect } from '../CurrencySelect/CurrencySelect'
+
 interface Props {
   readonly currencies: readonly string[]
   readonly from: string | undefined
@@ -26,31 +28,21 @@ export function ExchangePanel({
   return (
     <div>
       <div>
-        <select
-          data-testid="from-currency"
-          value={from ?? ''}
-          onChange={(e) => onFromChange(e.target.value)}
-        >
-          {currencies.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <CurrencySelect
+          testId="from-currency"
+          currencies={currencies}
+          value={from}
+          onChange={onFromChange}
+        />
         <span data-testid="amount">{amount}</span>
       </div>
       <div>
-        <select
-          data-testid="to-currency"
-          value={to ?? ''}
-          onChange={(e) => onToChange(e.target.value)}
-        >
-          {currencies.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <CurrencySelect
+          testId="to-currency"
+          currencies={currencies}
+          value={to}
+          onChange={onToChange}
+        />
         <span data-testid="result">{result}</span>
       </div>
       <div>

@@ -1,3 +1,4 @@
+export * from './CurrencySelect/CurrencySelect'
 export * from './ExchangePanel/ExchangePanel'
 export * from './HistoryPanel/HistoryPanel'
 export * from './HistoryRow/HistoryRow'
