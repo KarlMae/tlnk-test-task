@@ -49,7 +49,7 @@ const DISABLED_ON_HISTORY = new Set([
   'm',
 ])
 
-const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
+export const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
   return (
     <table ref={ref} className={styles.keypad}>
       <tbody>
@@ -79,5 +79,3 @@ const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
     </table>
   )
 })
-
-Keypad.displayName = 'Keypad'

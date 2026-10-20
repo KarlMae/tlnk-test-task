@@ -7,13 +7,7 @@ function formatRecord(record: HistoryRecord): string {
   return `${record.from} ${record.amount} → ${record.to} ${record.result}`
 }
 
-export default function HistoryRow({
-  record,
-  selected,
-}: {
-  record: HistoryRecord
-  selected: boolean
-}) {
+export function HistoryRow({ record, selected }: { record: HistoryRecord; selected: boolean }) {
   const [label] = useState(() => formatRecord(record))
   return (
     <li
