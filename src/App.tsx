@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
-import Keypad from './ui/Keypad/Keypad'
-import HistoryRow from './ui/HistoryRow/HistoryRow'
+import { HistoryRow, Keypad } from './ui'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
-import { Tab } from './model/tab.ts'
-import { useRatesQuery } from './api/rates/rates.api.ts'
-import { useQuoteQuery } from './api/quote/quote.api.ts'
-import { HistoryRecord } from './model/historyRecord.ts'
+import { HistoryRecord, Tab } from './model'
+import { useQuoteQuery, useRatesQuery } from './api'
 import styles from './App.module.css'
 
 export default function App() {

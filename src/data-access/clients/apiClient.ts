@@ -1,5 +1,5 @@
-import { ApiClient } from '../../model/apiClient.ts'
-import { ApiError } from '../../model/apiError.ts'
+import { ApiClient } from '../../model'
+import { ApiError } from '../../model'
 
 const API_BASE_URL = '/api'
 

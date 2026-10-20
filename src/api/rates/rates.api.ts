@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useApiClient } from '../../data-access/hooks/useApiClient.ts'
-import { ApiClient } from '../../model/apiClient.ts'
+import { useApiClient } from '../../data-access'
+import { ApiClient } from '../../model'
 import { RatesResponse } from './rates.types.ts'
 import { ratesKeys } from './ratesKeys.ts'
 

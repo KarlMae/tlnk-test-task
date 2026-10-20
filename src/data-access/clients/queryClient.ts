@@ -1,5 +1,5 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
-import { ApiError } from '../../model/apiError.ts'
+import { ApiError } from '../../model'
 
 const MAX_QUERY_RETRIES = 3
 

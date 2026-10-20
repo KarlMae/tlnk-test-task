@@ -1,6 +1,6 @@
 import { skipToken, useQuery } from '@tanstack/react-query'
-import { useApiClient } from '../../data-access/hooks/useApiClient.ts'
-import { ApiClient } from '../../model/apiClient.ts'
+import { useApiClient } from '../../data-access'
+import { ApiClient } from '../../model'
 import { Quote, QuoteRequest } from './quote.types.ts'
 import { quoteKeys } from './quoteKeys.ts'
 

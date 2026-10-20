@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { KeypadButton, KeypadProps } from '../../model/keypad.ts'
+import { KeypadButton, KeypadProps } from '../../model'
 import styles from './Keypad.module.css'
 
 const ROWS: KeypadButton[][] = [
@@ -81,5 +81,3 @@ const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
 })
 
 Keypad.displayName = 'Keypad'
-
-export default Keypad
