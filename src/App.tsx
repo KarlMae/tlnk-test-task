@@ -3,8 +3,8 @@ import Keypad from './Keypad'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
 import { Tab } from './model/tab.ts'
-import { RatesResponse } from './model/ratesResponses.ts'
-import { Quote } from './model/quote.ts'
+import { useRatesQuery } from './api/rates/rates.api.ts'
+import { useQuoteQuery } from './api/quote/quote.api.ts'
 import { HistoryRecord } from './model/historyRecord.ts'
 
 function formatRecord(record: HistoryRecord): string {
@@ -27,50 +27,23 @@ function HistoryRow({ record, selected }: { record: HistoryRecord; selected: boo
 export default function App() {
   const [tab, setTab] = useState<Tab>('exchange')
   const [amount, setAmount] = useState('0')
-  const [from, setFrom] = useState('EUR')
-  const [to, setTo] = useState('USD')
-  const [currencies, setCurrencies] = useState<string[]>([])
-  const [quote, setQuote] = useState<Quote | null>(null)
-  const [result, setResult] = useState('0')
-  const [loading, setLoading] = useState(false)
-  const [refresh, setRefresh] = useState(0)
+  const [selectedFrom, setFrom] = useState<string>()
+  const [selectedTo, setTo] = useState<string>()
   const [history, setHistory] = useState<HistoryRecord[]>(initialHistory)
   const [selected, setSelected] = useState(0)
 
   const tableRef = useRef<HTMLTableElement>(null)
 
-  useEffect(() => {
-    fetch('/api/rates')
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to load rates: ${res.status}`)
-        return res.json()
-      })
-      .then((data: RatesResponse) => {
-        setCurrencies(data.currencies)
-        setFrom(data.currencies[0])
-        setTo(data.currencies[1])
-      })
-      .catch((err) => console.error(err))
-  }, [])
+  const ratesQuery = useRatesQuery()
+  const currencies = ratesQuery.data?.currencies ?? []
+  const from = selectedFrom ?? currencies[0]
+  const to = selectedTo ?? currencies[1]
 
-  useEffect(() => {
-    setLoading(true)
-    fetch('/api/quote', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to, amount: parseAmount(amount) }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Quote request failed: ${res.status}`)
-        return res.json()
-      })
-      .then((data: Quote) => {
-        setQuote(data)
-        setResult(formatMoney(convert(data.amount, data.rate)))
-        setLoading(false)
-      })
-      .catch((err) => console.error(err))
-  }, [amount, from, to, refresh])
+  const quoteQuery = useQuoteQuery(
+    from && to ? { from, to, amount: parseAmount(amount) } : undefined,
+  )
+  const quote = quoteQuery.data
+  const result = quote ? formatMoney(convert(quote.amount, quote.rate)) : '0'
 
   useEffect(() => {
     const table = tableRef.current
@@ -168,7 +141,7 @@ export default function App() {
           <div>
             <select
               data-testid="from-currency"
-              value={from}
+              value={from ?? ''}
               onChange={(e) => setFrom(e.target.value)}
             >
               {currencies.map((c) => (
@@ -180,7 +153,11 @@ export default function App() {
             <span data-testid="amount">{amount}</span>
           </div>
           <div>
-            <select data-testid="to-currency" value={to} onChange={(e) => setTo(e.target.value)}>
+            <select
+              data-testid="to-currency"
+              value={to ?? ''}
+              onChange={(e) => setTo(e.target.value)}
+            >
               {currencies.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -190,7 +167,7 @@ export default function App() {
             <span data-testid="result">{result}</span>
           </div>
           <div>
-            {loading ? (
+            {quoteQuery.isFetching ? (
               <span>Loading…</span>
             ) : (
               quote && (
@@ -199,7 +176,7 @@ export default function App() {
                 </span>
               )
             )}
-            <button type="button" data-testid="refresh" onClick={() => setRefresh((r) => r + 1)}>
+            <button type="button" data-testid="refresh" onClick={() => void quoteQuery.refetch()}>
               ⟳
             </button>
           </div>
