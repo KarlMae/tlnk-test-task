@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import classNames from 'classnames'
-import { HistoryRow, Keypad } from './ui'
+import { ExchangePanel, HistoryPanel, Keypad, Tabs } from './ui'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
 import { KeypadKey, Tab, type HistoryRecord } from './model'
 import { useQuoteQuery, useRatesQuery } from './api'
-import styles from './App.module.css'
 
 export default function App() {
   const [tab, setTab] = useState<Tab>(Tab.Exchange)
@@ -87,82 +85,24 @@ export default function App() {
 
   return (
     <div>
-      <div>
-        <button
-          type="button"
-          data-testid="tab-exchange"
-          onClick={() => setTab(Tab.Exchange)}
-          className={classNames(styles.tab, { [styles.selected]: tab === Tab.Exchange })}
-        >
-          Exchange Rate
-        </button>
-        <button
-          type="button"
-          data-testid="tab-history"
-          onClick={() => setTab(Tab.History)}
-          className={classNames(styles.tab, { [styles.selected]: tab === Tab.History })}
-        >
-          History
-        </button>
-      </div>
+      <Tabs tab={tab} onTabChange={setTab} />
 
       {tab === Tab.Exchange && (
-        <div>
-          <div>
-            <select
-              data-testid="from-currency"
-              value={from ?? ''}
-              onChange={(e) => setFrom(e.target.value)}
-            >
-              {currencies.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            <span data-testid="amount">{amount}</span>
-          </div>
-          <div>
-            <select
-              data-testid="to-currency"
-              value={to ?? ''}
-              onChange={(e) => setTo(e.target.value)}
-            >
-              {currencies.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            <span data-testid="result">{result}</span>
-          </div>
-          <div>
-            {quoteQuery.isFetching ? (
-              <span>Loading…</span>
-            ) : (
-              quote && (
-                <span data-testid="updated-at">
-                  Last updated {quote.createdAt.split('T')[1].slice(0, 8)}
-                </span>
-              )
-            )}
-            <button type="button" data-testid="refresh" onClick={() => void quoteQuery.refetch()}>
-              ⟳
-            </button>
-          </div>
-        </div>
+        <ExchangePanel
+          currencies={currencies}
+          from={from}
+          to={to}
+          amount={amount}
+          result={result}
+          isFetching={quoteQuery.isFetching}
+          quoteCreatedAt={quote?.createdAt}
+          onFromChange={setFrom}
+          onToChange={setTo}
+          onRefresh={() => void quoteQuery.refetch()}
+        />
       )}
 
-      {tab === Tab.History && (
-        <div>
-          <ul>
-            {history.map((record, i) => (
-              <HistoryRow key={i} record={record} selected={i === selected} />
-            ))}
-          </ul>
-          <p data-testid="history-count">{history.length} records</p>
-        </div>
-      )}
+      {tab === Tab.History && <HistoryPanel history={history} selected={selected} />}
 
       <Keypad tab={tab} onKeyPress={handleKeyPress} />
     </div>

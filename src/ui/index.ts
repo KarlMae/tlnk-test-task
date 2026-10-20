@@ -1,2 +1,5 @@
+export * from './ExchangePanel/ExchangePanel'
+export * from './HistoryPanel/HistoryPanel'
 export * from './HistoryRow/HistoryRow'
 export * from './Keypad/Keypad'
+export * from './Tabs/Tabs'
