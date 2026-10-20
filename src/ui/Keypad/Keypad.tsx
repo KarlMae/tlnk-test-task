@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
-import { KeypadButton, KeypadProps } from './model/keypad.ts'
+import { KeypadButton, KeypadProps } from '../../model/keypad.ts'
+import styles from './Keypad.module.css'
 
 const ROWS: KeypadButton[][] = [
   [
@@ -50,7 +51,7 @@ const DISABLED_ON_HISTORY = new Set([
 
 const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
   return (
-    <table ref={ref} style={{ borderCollapse: 'collapse' }}>
+    <table ref={ref} className={styles.keypad}>
       <tbody>
         {ROWS.map((row, i) => (
           <tr key={i}>
@@ -65,7 +66,7 @@ const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {
                     type="button"
                     data-testid={button.testId}
                     disabled={disabled}
-                    style={{ width: 48, height: 32 }}
+                    className={styles.key}
                   >
                     {button.label}
                   </button>

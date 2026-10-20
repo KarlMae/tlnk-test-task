@@ -1,0 +1,8 @@
+.keypad {
+  border-collapse: collapse;
+}
+
+.key {
+  width: 48px;
+  height: 32px;
+}

@@ -1,0 +1,27 @@
+import { useState } from 'react'
+import classNames from 'classnames'
+import { HistoryRecord } from '../../model/historyRecord.ts'
+import styles from './HistoryRow.module.css'
+
+function formatRecord(record: HistoryRecord): string {
+  return `${record.from} ${record.amount} → ${record.to} ${record.result}`
+}
+
+export default function HistoryRow({
+  record,
+  selected,
+}: {
+  record: HistoryRecord
+  selected: boolean
+}) {
+  const [label] = useState(() => formatRecord(record))
+  return (
+    <li
+      data-testid="history-item"
+      aria-selected={selected}
+      className={classNames(styles.row, { [styles.selected]: selected })}
+    >
+      {label}
+    </li>
+  )
+}

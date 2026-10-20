@@ -1,0 +1,7 @@
+.selected {
+  --row-font-weight: bold;
+}
+
+.row {
+  font-weight: var(--row-font-weight, normal);
+}

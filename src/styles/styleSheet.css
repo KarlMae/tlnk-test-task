@@ -1,0 +1,5 @@
+:root {
+  --color-fgBorder: var(--cb-gray300);
+  --color-bgBrand: var(--cb-blue600);
+  --color-bgBrandHover: var(--cb-blue700);
+}

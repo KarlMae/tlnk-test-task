@@ -1,28 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import Keypad from './Keypad'
+import classNames from 'classnames'
+import Keypad from './ui/Keypad/Keypad'
+import HistoryRow from './ui/HistoryRow/HistoryRow'
 import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
 import { Tab } from './model/tab.ts'
 import { useRatesQuery } from './api/rates/rates.api.ts'
 import { useQuoteQuery } from './api/quote/quote.api.ts'
 import { HistoryRecord } from './model/historyRecord.ts'
-
-function formatRecord(record: HistoryRecord): string {
-  return `${record.from} ${record.amount} → ${record.to} ${record.result}`
-}
-
-function HistoryRow({ record, selected }: { record: HistoryRecord; selected: boolean }) {
-  const [label] = useState(() => formatRecord(record))
-  return (
-    <li
-      data-testid="history-item"
-      aria-selected={selected}
-      style={{ fontWeight: selected ? 'bold' : 'normal' }}
-    >
-      {label}
-    </li>
-  )
-}
+import styles from './App.module.css'
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('exchange')
@@ -122,7 +108,7 @@ export default function App() {
           type="button"
           data-testid="tab-exchange"
           onClick={() => setTab('exchange')}
-          style={{ fontWeight: tab === 'exchange' ? 'bold' : 'normal' }}
+          className={classNames(styles.tab, { [styles.selected]: tab === 'exchange' })}
         >
           Exchange Rate
         </button>
@@ -130,7 +116,7 @@ export default function App() {
           type="button"
           data-testid="tab-history"
           onClick={() => setTab('history')}
-          style={{ fontWeight: tab === 'history' ? 'bold' : 'normal' }}
+          className={classNames(styles.tab, { [styles.selected]: tab === 'history' })}
         >
           History
         </button>

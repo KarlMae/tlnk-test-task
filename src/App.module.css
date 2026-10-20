@@ -1,0 +1,7 @@
+.selected {
+  --tab-font-weight: bold;
+}
+
+.tab {
+  font-weight: var(--tab-font-weight, normal);
+}
