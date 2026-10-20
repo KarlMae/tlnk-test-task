@@ -1,9 +1,9 @@
 export interface KeypadProps {
-  tab: 'exchange' | 'history'
+  readonly tab: 'exchange' | 'history'
 }
 
 export interface KeypadButton {
-  label: string
-  testId: string
-  historyOnly?: boolean
+  readonly label: string
+  readonly testId: string
+  readonly historyOnly?: boolean
 }

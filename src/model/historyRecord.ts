@@ -1,6 +1,6 @@
 export interface HistoryRecord {
-  from: string
-  to: string
-  amount: string
-  result: string
+  readonly from: string
+  readonly to: string
+  readonly amount: string
+  readonly result: string
 }
