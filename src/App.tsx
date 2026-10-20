@@ -1,26 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import Keypad from './Keypad'
-import { initialHistory, type HistoryRecord } from './history'
+import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
-
-type Tab = 'exchange' | 'history'
-
-interface RatesResponse {
-  base: string
-  currencies: string[]
-  rates: Record<string, string>
-  updatedAt: string
-}
-
-interface Quote {
-  quoteId: string
-  from: string
-  to: string
-  rate: string
-  amount: number
-  createdAt: string
-  expiresAt: string
-}
+import { Tab } from './model/tab.ts'
+import { RatesResponse } from './model/ratesResponses.ts'
+import { Quote } from './model/quote.ts'
+import { HistoryRecord } from './model/historyRecord.ts'
 
 function formatRecord(record: HistoryRecord): string {
   return `${record.from} ${record.amount} → ${record.to} ${record.result}`
@@ -181,7 +166,11 @@ export default function App() {
       {tab === 'exchange' && (
         <div>
           <div>
-            <select data-testid="from-currency" value={from} onChange={(e) => setFrom(e.target.value)}>
+            <select
+              data-testid="from-currency"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+            >
               {currencies.map((c) => (
                 <option key={c} value={c}>
                   {c}

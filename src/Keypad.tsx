@@ -1,14 +1,5 @@
 import { forwardRef } from 'react'
-
-interface KeypadProps {
-  tab: 'exchange' | 'history'
-}
-
-interface KeypadButton {
-  label: string
-  testId: string
-  historyOnly?: boolean
-}
+import { KeypadButton, KeypadProps } from './model/keypad.ts'
 
 const ROWS: KeypadButton[][] = [
   [
@@ -42,7 +33,19 @@ const ROWS: KeypadButton[][] = [
 ]
 
 const DISABLED_ON_HISTORY = new Set([
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '.', 'm',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '00',
+  '.',
+  'm',
 ])
 
 const Keypad = forwardRef<HTMLTableElement, KeypadProps>(({ tab }, ref) => {

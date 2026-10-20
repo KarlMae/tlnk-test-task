@@ -1,9 +1,4 @@
-export interface HistoryRecord {
-  from: string
-  to: string
-  amount: string
-  result: string
-}
+import { HistoryRecord } from './model/historyRecord.ts'
 
 export const initialHistory: HistoryRecord[] = [
   { from: 'USD', to: 'EUR', amount: '1,000', result: '922.25' },
