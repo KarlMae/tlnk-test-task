@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react'
+import { type BaseHTMLAttributes, useEffect, useState } from 'react'
 import { parseISO } from 'date-fns'
 import { formatTimeAgo } from '../../time'
+import styles from './LastUpdated.module.css'
 
 const SECOND_IN_MS = 1000
 
-interface Props {
+type Props = BaseHTMLAttributes<HTMLDivElement> & {
   readonly updatedAt: string
 }
 
-export function LastUpdated({ updatedAt }: Props) {
+export function LastUpdated({ className, updatedAt }: Props) {
   const [now, setNow] = useState(() => new Date())
 
   useEffect(() => {
@@ -17,6 +18,8 @@ export function LastUpdated({ updatedAt }: Props) {
   }, [])
 
   return (
-    <span data-testid="updated-at">Last updated {formatTimeAgo(parseISO(updatedAt), now)}</span>
+    <span data-testid="updated-at" className={styles.lastUpdated}>
+      Last updated {formatTimeAgo(parseISO(updatedAt), now)}
+    </span>
   )
 }

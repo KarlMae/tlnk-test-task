@@ -1,5 +1,8 @@
 :root {
-  --color-fgBorder: var(--cb-gray300);
+  --color-fgSelected: var(--cb-blue400);
+  --color-fgText: var(--cb-gray900);
   --color-bgBrand: var(--cb-blue600);
   --color-bgBrandHover: var(--cb-blue700);
+  --color-bgPrimary: var(--cb-gray200);
+  --color-bgSecondary: var(--cb-gray100);
 }

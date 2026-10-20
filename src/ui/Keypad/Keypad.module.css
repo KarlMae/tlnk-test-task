@@ -1,8 +1,15 @@
 .keypad {
-  border-collapse: collapse;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--color-bgSecondary);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+
+  padding: 16px;
 }
 
 .key {
-  width: 48px;
-  height: 32px;
+  min-width: 0;
+  background: none;
+  border: none;
+  font-size: 40px;
 }

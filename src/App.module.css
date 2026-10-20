@@ -1,0 +1,29 @@
+.app {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+
+  background: var(--color-bgPrimary);
+}
+
+.tabs {
+
+}
+
+.exchange {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 480px;
+}
+
+.history {
+  flex: 1 0 auto;
+}
+
+.keypad {
+  flex: 1 0 auto;
+  width: 100%;
+}

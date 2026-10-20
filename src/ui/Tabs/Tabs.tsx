@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import { Tab } from '../../model'
 import styles from './Tabs.module.css'
+import type { BaseHTMLAttributes } from 'react'
 
-interface Props {
+type Props = BaseHTMLAttributes<HTMLDivElement> & {
   readonly tab: Tab
   readonly onTabChange: (tab: Tab) => void
 }
@@ -12,9 +13,9 @@ const TABS = [
   { tab: Tab.History, label: 'History' },
 ]
 
-export function Tabs({ tab, onTabChange }: Props) {
+export function Tabs({ className, tab, onTabChange }: Props) {
   return (
-    <div>
+    <div className={classNames(className, styles.tabs)}>
       {TABS.map(({ tab: value, label }) => (
         <button
           key={value}

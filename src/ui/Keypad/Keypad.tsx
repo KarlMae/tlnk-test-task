@@ -1,7 +1,10 @@
+import type { BaseHTMLAttributes } from 'react'
 import { KeypadKey, Tab, type KeypadButton } from '../../model'
 import styles from './Keypad.module.css'
+import classNames from 'classnames'
+import { Icon } from '../Icon/Icon'
 
-interface Props {
+type Props = Omit<BaseHTMLAttributes<HTMLDivElement>, 'onKeyPress'> & {
   readonly tab: Tab
   readonly onKeyPress: (key: KeypadKey) => void
 }
@@ -53,34 +56,41 @@ const DISABLED_ON_HISTORY = new Set<KeypadKey>([
   KeypadKey.Save,
 ])
 
-export function Keypad({ tab, onKeyPress }: Props) {
+export function Keypad({ className, tab, onKeyPress }: Props) {
   return (
-    <table className={styles.keypad}>
-      <tbody>
-        {ROWS.map((row, i) => (
-          <tr key={i}>
-            {row.map((button) => {
-              if (button.historyOnly && tab !== Tab.History) {
-                return null
+    <div className={classNames(className, styles.keypad)}>
+      {ROWS.flatMap((row, rowIndex) =>
+        row.map((button, columnIndex) => {
+          if (button.historyOnly && tab !== Tab.History) {
+            return null
+          }
+          const disabled = tab === Tab.History && DISABLED_ON_HISTORY.has(button.key)
+          return (
+            <button
+              key={button.key}
+              type="button"
+              data-testid={`key-${button.key}`}
+              aria-label={
+                button.key === KeypadKey.Backspace
+                  ? tab === Tab.History
+                    ? 'Delete selected record'
+                    : 'Backspace'
+                  : undefined
               }
-              const disabled = tab === Tab.History && DISABLED_ON_HISTORY.has(button.key)
-              return (
-                <td key={button.key}>
-                  <button
-                    type="button"
-                    data-testid={`key-${button.key}`}
-                    disabled={disabled}
-                    onClick={() => onKeyPress(button.key)}
-                    className={styles.key}
-                  >
-                    {button.label}
-                  </button>
-                </td>
-              )
-            })}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+              disabled={disabled}
+              className={styles.key}
+              style={{ gridRow: rowIndex + 1, gridColumn: columnIndex + 1 }}
+              onClick={() => onKeyPress(button.key)}
+            >
+              {button.key === KeypadKey.Backspace ? (
+                <Icon type="back" width={43} height={29} />
+              ) : (
+                button.label
+              )}
+            </button>
+          )
+        }),
+      )}
+    </div>
   )
 }

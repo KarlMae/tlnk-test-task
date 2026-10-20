@@ -1,7 +1,12 @@
+import type { BaseHTMLAttributes } from 'react'
+import classNames from 'classnames'
+import styles from './ExchangePanel.module.css'
 import { CurrencySelect } from '../CurrencySelect/CurrencySelect'
 import { LastUpdated } from '../LastUpdated/LastUpdated'
+import { Icon } from '../Icon/Icon'
+import { FitText } from '../FitText/FitText'
 
-interface Props {
+type Props = BaseHTMLAttributes<HTMLDivElement> & {
   readonly currencies: readonly string[]
   readonly from: string | undefined
   readonly to: string | undefined
@@ -15,6 +20,7 @@ interface Props {
 }
 
 export function ExchangePanel({
+  className,
   currencies,
   from,
   to,
@@ -27,24 +33,32 @@ export function ExchangePanel({
   onRefresh,
 }: Props) {
   return (
-    <div>
-      <div>
+    <div className={classNames(className, styles.panel)}>
+      <div className={styles.row}>
         <CurrencySelect
           testId="from-currency"
           currencies={currencies}
           value={from}
+          className={styles.currencySelect}
           onChange={onFromChange}
         />
-        <span data-testid="amount">{amount}</span>
+        <Icon type="right-chevron" width={8} height={14} />
+        <FitText data-testid="amount" className={styles.amount}>
+          {amount}
+        </FitText>
       </div>
-      <div>
+      <div className={styles.row}>
         <CurrencySelect
           testId="to-currency"
           currencies={currencies}
           value={to}
+          className={styles.currencySelect}
           onChange={onToChange}
         />
-        <span data-testid="result">{result}</span>
+        <Icon type="right-chevron" width={8} height={14} />
+        <FitText data-testid="result" className={styles.amount}>
+          {result}
+        </FitText>
       </div>
       <div>
         {isFetching ? (
@@ -52,8 +66,14 @@ export function ExchangePanel({
         ) : (
           quoteCreatedAt && <LastUpdated updatedAt={quoteCreatedAt} />
         )}
-        <button type="button" data-testid="refresh" onClick={onRefresh}>
-          ⟳
+        <button
+          type="button"
+          data-testid="refresh"
+          aria-label="Refresh exchange rate"
+          className={styles.refreshButton}
+          onClick={onRefresh}
+        >
+          <Icon type="reload" />
         </button>
       </div>
     </div>

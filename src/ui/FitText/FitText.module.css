@@ -1,0 +1,11 @@
+.container {
+  display: block;
+  min-width: 0;
+  line-height: 1.2;
+  min-height: 1.2em;
+}
+
+.text {
+  display: inline-block;
+  white-space: nowrap;
+}

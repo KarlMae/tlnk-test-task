@@ -4,6 +4,7 @@ import { initialHistory } from './history'
 import { convert, formatMoney, parseAmount } from './money'
 import { KeypadKey, Tab, type HistoryRecord } from './model'
 import { useQuoteQuery, useRatesQuery } from './api'
+import styles from './App.module.css'
 
 export default function App() {
   const [tab, setTab] = useState<Tab>(Tab.Exchange)
@@ -84,11 +85,12 @@ export default function App() {
   }
 
   return (
-    <div>
-      <Tabs tab={tab} onTabChange={setTab} />
+    <div className={styles.app}>
+      <Tabs className={styles.tabs} tab={tab} onTabChange={setTab} />
 
       {tab === Tab.Exchange && (
         <ExchangePanel
+          className={styles.exchange}
           currencies={currencies}
           from={from}
           to={to}
@@ -102,9 +104,11 @@ export default function App() {
         />
       )}
 
-      {tab === Tab.History && <HistoryPanel history={history} selected={selected} />}
+      {tab === Tab.History && (
+        <HistoryPanel className={styles.history} history={history} selected={selected} />
+      )}
 
-      <Keypad tab={tab} onKeyPress={handleKeyPress} />
+      <Keypad className={styles.keypad} tab={tab} onKeyPress={handleKeyPress} />
     </div>
   )
 }
