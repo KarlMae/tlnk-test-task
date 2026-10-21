@@ -7,6 +7,7 @@
 
   --color-fgSelected: var(--cb-blue400);
   --color-fgText: var(--cb-gray900);
+  --color-fgError: var(--cb-red400);
 
   --color-clear: var(--cb-red400);
   --color-delete: var(--cb-blue400);

@@ -32,7 +32,12 @@
 .amount {
   color: var(--color-fgSelected);
   font-size: 30px;
+  line-height: 1.2;
   text-align: right;
+}
+
+.resultLoading {
+  justify-self: end;
 }
 
 .refresh {
@@ -47,13 +52,20 @@
   cursor: pointer;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .refreshIcon {
   height: 12px;
   width: 12px;
 }
 
-.loader {
-  height: 14px;
+.placeholder {
+  flex: 1 0 auto;
+
+  display: flex;
+  align-items: center;
+
   font-size: 10px;
-  text-align: center;
 }

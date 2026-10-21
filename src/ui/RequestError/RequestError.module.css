@@ -1,0 +1,18 @@
+.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--color-fgError);
+  font-size: 10px;
+}
+
+.retry {
+  color: var(--color-fgSelected);
+  font-size: inherit;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}

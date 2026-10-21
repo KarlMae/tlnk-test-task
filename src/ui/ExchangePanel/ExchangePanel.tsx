@@ -6,8 +6,14 @@ import { CurrencySelect } from '../CurrencySelect/CurrencySelect'
 import { LastUpdated } from '../LastUpdated/LastUpdated'
 import { Icon } from '../Icon/Icon'
 import { FitText } from '../FitText/FitText'
+import { RequestError } from '../RequestError/RequestError'
+import { Spinner } from '../Spinner/Spinner'
+import { LoadingDots } from '../LoadingDots/LoadingDots'
 
 interface Exchange {
+  readonly currenciesStatus: 'pending' | 'error' | 'success'
+  readonly onRetryCurrencies: () => void
+  readonly quoteFailed: boolean
   readonly currencies: readonly string[]
   readonly from: string | undefined
   readonly to: string | undefined
@@ -25,25 +31,43 @@ type Props = BaseHTMLAttributes<HTMLDivElement> & {
 }
 
 export function ExchangePanel({ className, exchange }: Props) {
-  const {
-    currencies,
-    from,
-    to,
-    amount,
-    result,
-    isFetching,
-    quoteCreatedAt,
-    onFromChange,
-    onToChange,
-    onRefresh,
-  } = exchange
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={classNames(className, styles.panel)}
     >
+      <ExchangePanelContent exchange={exchange} />
+    </motion.div>
+  )
+}
+
+function ExchangePanelContent({ exchange }: { readonly exchange: Exchange }) {
+  switch (exchange.currenciesStatus) {
+    case 'pending':
+      return (
+        <div className={styles.placeholder}>
+          <Spinner label="Loading currencies" />
+        </div>
+      )
+    case 'error':
+      return (
+        <RequestError
+          className={styles.placeholder}
+          message="Couldn't load currencies"
+          onRetry={exchange.onRetryCurrencies}
+        />
+      )
+    case 'success':
+      return <ExchangeForm exchange={exchange} />
+  }
+}
+
+function ExchangeForm({ exchange }: { readonly exchange: Exchange }) {
+  const { currencies, from, to, amount, result, isFetching, onFromChange, onToChange } = exchange
+
+  return (
+    <>
       <div className={styles.values}>
         <div className={styles.row}>
           <CurrencySelect
@@ -67,35 +91,44 @@ export function ExchangePanel({ className, exchange }: Props) {
             onChange={onToChange}
           />
           <Icon type="right-chevron" width={8} height={14} />
-          <FitText data-testid="result" className={styles.amount}>
-            {result}
-          </FitText>
+          {isFetching ? (
+            <LoadingDots
+              data-testid="result"
+              label="Loading quote"
+              className={classNames(styles.amount, styles.resultLoading)}
+            />
+          ) : (
+            <FitText data-testid="result" className={styles.amount}>
+              {result}
+            </FitText>
+          )}
         </div>
       </div>
-      {isFetching ? (
-        <motion.span
-          key="loading"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={styles.loader}
-        >
-          Loading…
-        </motion.span>
-      ) : (
-        <motion.button
-          key="refresh"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          type="button"
-          data-testid="refresh"
-          aria-label="Refresh exchange rate"
-          className={styles.refresh}
-          onClick={onRefresh}
-        >
-          {quoteCreatedAt && <LastUpdated updatedAt={quoteCreatedAt} />}
-          <Icon className={styles.refreshIcon} type="reload" />
-        </motion.button>
-      )}
-    </motion.div>
+      <QuoteStatus exchange={exchange} />
+    </>
+  )
+}
+
+function QuoteStatus({ exchange }: { readonly exchange: Exchange }) {
+  const { isFetching, quoteFailed, quoteCreatedAt, onRefresh } = exchange
+
+  if (quoteFailed) {
+    return <RequestError message="Couldn't get a quote" onRetry={onRefresh} />
+  }
+
+  return (
+    <motion.button
+      key="refresh"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      type="button"
+      data-testid="refresh"
+      aria-label="Refresh exchange rate"
+      className={classNames(styles.refresh, (isFetching || !quoteCreatedAt) && styles.hidden)}
+      onClick={onRefresh}
+    >
+      {quoteCreatedAt && <LastUpdated updatedAt={quoteCreatedAt} />}
+      <Icon className={styles.refreshIcon} type="reload" />
+    </motion.button>
   )
 }

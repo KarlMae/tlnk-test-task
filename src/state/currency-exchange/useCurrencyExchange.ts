@@ -81,6 +81,9 @@ export function useCurrencyExchange() {
   }
 
   const exchange = {
+    currenciesStatus: ratesQuery.status,
+    onRetryCurrencies: () => void ratesQuery.refetch(),
+    quoteFailed: quoteQuery.isError,
     currencies,
     from,
     to,
