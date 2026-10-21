@@ -26,13 +26,17 @@ export function useCurrencyExchange() {
 
   const refresh = () => void quoteQuery.refetch()
 
-  const saveCurrentConversion = () =>
+  const hasQuote = quoteQuery.data !== undefined
+
+  const saveCurrentConversion = () => {
+    if (!hasQuote) return
     history.add({
       from,
       to,
       amount: parseAmount(amountInput.amount),
       result,
     })
+  }
 
   const loadSelectedRecord = () => {
     if (!history.selectedRecord) return
@@ -80,5 +84,5 @@ export function useCurrencyExchange() {
     onRefresh: refresh,
   }
 
-  return { tab, setTab, exchange, history, handleKeyPress }
+  return { tab, setTab, exchange, history, hasQuote, handleKeyPress }
 }

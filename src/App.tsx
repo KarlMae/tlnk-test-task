@@ -6,7 +6,7 @@ import { MotionConfig, useReducedMotion } from 'motion/react'
 
 export default function App() {
   const reducedMotion = useReducedMotion()
-  const { tab, setTab, exchange, history, handleKeyPress } = useCurrencyExchange()
+  const { tab, setTab, exchange, history, hasQuote, handleKeyPress } = useCurrencyExchange()
 
   return (
     <MotionConfig
@@ -18,7 +18,12 @@ export default function App() {
         {tab === Tab.Exchange && <ExchangePanel className={styles.exchange} exchange={exchange} />}
         {tab === Tab.History && <HistoryPanel className={styles.history} history={history} />}
 
-        <Keypad className={styles.keypad} tab={tab} onKeyPress={handleKeyPress} />
+        <Keypad
+          className={styles.keypad}
+          tab={tab}
+          hasQuote={hasQuote}
+          onKeyPress={handleKeyPress}
+        />
       </div>
     </MotionConfig>
   )

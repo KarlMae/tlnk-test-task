@@ -7,6 +7,7 @@ import { Icon } from '../Icon/Icon'
 
 type Props = Omit<BaseHTMLAttributes<HTMLDivElement>, 'onKeyPress'> & {
   readonly tab: Tab
+  readonly hasQuote: boolean
   readonly onKeyPress: (key: KeypadKey) => void
 }
 
@@ -129,18 +130,20 @@ const ROWS: KeypadButton[][] = [
 function Key({
   button,
   tab,
+  disabled,
   gridRow,
   gridColumn,
   onKeyPress,
 }: {
   readonly button: KeypadButton
   readonly tab: Tab
+  readonly disabled: boolean
   readonly gridRow: number
   readonly gridColumn: number
   readonly onKeyPress: Props['onKeyPress']
 }) {
   const isPresent = useIsPresent()
-  const enabled = button.enabledOn.includes(tab)
+  const enabled = button.enabledOn.includes(tab) && !disabled
 
   return (
     <motion.button
@@ -171,7 +174,7 @@ function Key({
   )
 }
 
-export function Keypad({ className, tab, onKeyPress }: Props) {
+export function Keypad({ className, tab, hasQuote, onKeyPress }: Props) {
   return (
     <div className={classNames(className, styles.keypad)}>
       <AnimatePresence initial={false}>
@@ -183,6 +186,7 @@ export function Keypad({ className, tab, onKeyPress }: Props) {
                   key={button.key}
                   button={button}
                   tab={tab}
+                  disabled={button.key === KeypadKey.Save && !hasQuote}
                   gridRow={rowIndex + 1}
                   gridColumn={columnIndex + 1}
                   onKeyPress={onKeyPress}
