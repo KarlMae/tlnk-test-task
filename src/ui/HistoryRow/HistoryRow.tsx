@@ -3,6 +3,7 @@ import { motion, useIsPresent } from 'motion/react'
 import classNames from 'classnames'
 import { formatMoney } from '../../formatters/money'
 import type { HistoryRecord } from '../../model'
+import { FitText } from '../FitText/FitText'
 import styles from './HistoryRow.module.css'
 
 type Props = BaseHTMLAttributes<HTMLDivElement> & {
@@ -26,7 +27,7 @@ export function HistoryRow({ record, selected }: Props) {
       aria-selected={selected}
       className={classNames(styles.row, { [styles.selected]: selected })}
     >
-      {formatRecord(record)}
+      <FitText>{formatRecord(record)}</FitText>
     </motion.li>
   )
 }
