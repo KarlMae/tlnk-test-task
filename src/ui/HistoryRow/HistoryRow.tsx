@@ -1,6 +1,7 @@
 import type { BaseHTMLAttributes } from 'react'
 import { motion, useIsPresent } from 'motion/react'
 import classNames from 'classnames'
+import { formatMoney } from '../../formatters/money'
 import type { HistoryRecord } from '../../model'
 import styles from './HistoryRow.module.css'
 
@@ -10,7 +11,7 @@ type Props = BaseHTMLAttributes<HTMLDivElement> & {
 }
 
 function formatRecord(record: HistoryRecord): string {
-  return `${record.from} ${record.amount} → ${record.to} ${record.result}`
+  return `${record.from} ${formatMoney(record.amount)} → ${record.to} ${record.result}`
 }
 
 export function HistoryRow({ record, selected }: Props) {

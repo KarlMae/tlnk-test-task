@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuoteQuery, useRatesQuery } from '../../api'
-import { formatMoney, formatQuoteResult, parseAmount } from '../../formatters/money'
+import { formatQuoteResult, parseAmount } from '../../formatters/money'
 import { AMOUNT_KEYS, KeypadKey, Tab } from '../../model'
 import { useAmountInput } from '../amount-input/amountInput'
 import { useHistory } from '../history/useHistory'
@@ -30,7 +30,7 @@ export function useCurrencyExchange() {
     history.add({
       from,
       to,
-      amount: formatMoney(parseAmount(amountInput.amount)),
+      amount: parseAmount(amountInput.amount),
       result,
     })
 
@@ -38,7 +38,7 @@ export function useCurrencyExchange() {
     if (!history.selectedRecord) return
     setFrom(history.selectedRecord.from)
     setTo(history.selectedRecord.to)
-    amountInput.setAmount(history.selectedRecord.amount)
+    amountInput.setAmount(String(history.selectedRecord.amount))
     setTab(Tab.Exchange)
   }
 
