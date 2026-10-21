@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'motion/react'
 import type { BaseHTMLAttributes } from 'react'
 import classNames from 'classnames'
 import styles from './HistoryPanel.module.css'
@@ -11,13 +12,21 @@ type Props = BaseHTMLAttributes<HTMLDivElement> & {
 
 export function HistoryPanel({ className, history, selected }: Props) {
   return (
-    <div className={classNames(className, styles.panel)}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={classNames(className, styles.panel)}
+    >
       <ul className={styles.list}>
-        {history.map((record, i) => (
-          <HistoryRow key={i} record={record} selected={i === selected} />
-        ))}
+        <AnimatePresence initial={false}>
+          {history.map((record, i) => (
+            <HistoryRow key={record.id} record={record} selected={i === selected} />
+          ))}
+        </AnimatePresence>
       </ul>
-      <p data-testid="history-count" className={styles.count}>{history.length} records</p>
-    </div>
+      <p data-testid="history-count" className={styles.count}>
+        {history.length} records
+      </p>
+    </motion.div>
   )
 }

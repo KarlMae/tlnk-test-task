@@ -1,3 +1,4 @@
+import { AnimatePresence, motion, useIsPresent } from 'motion/react'
 import type { BaseHTMLAttributes } from 'react'
 import { KeypadKey, Tab } from '../../model'
 import styles from './Keypad.module.css'
@@ -125,40 +126,71 @@ const ROWS: KeypadButton[][] = [
   ],
 ]
 
+function Key({
+  button,
+  tab,
+  gridRow,
+  gridColumn,
+  onKeyPress,
+}: {
+  readonly button: KeypadButton
+  readonly tab: Tab
+  readonly gridRow: number
+  readonly gridColumn: number
+  readonly onKeyPress: Props['onKeyPress']
+}) {
+  const isPresent = useIsPresent()
+  const enabled = button.enabledOn.includes(tab)
+
+  return (
+    <motion.button
+      initial={{ opacity: 0 }}
+      animate={{ opacity: enabled ? 1 : 0.2 }}
+      exit={{ opacity: 0 }}
+      type="button"
+      data-testid={`key-${button.key}`}
+      aria-hidden={!isPresent}
+      aria-label={
+        button.key === KeypadKey.Backspace
+          ? tab === Tab.History
+            ? 'Delete selected record'
+            : 'Backspace'
+          : undefined
+      }
+      disabled={!enabled || !isPresent}
+      style={{ gridRow, gridColumn }}
+      className={classNames(styles.key, button.className)}
+      onClick={() => onKeyPress(button.key)}
+    >
+      {button.key === KeypadKey.Backspace ? (
+        <Icon type="back" width={43} height={29} />
+      ) : (
+        button.label
+      )}
+    </motion.button>
+  )
+}
+
 export function Keypad({ className, tab, onKeyPress }: Props) {
   return (
     <div className={classNames(className, styles.keypad)}>
-      {ROWS.flatMap((row, rowIndex) =>
-        row.map((button, columnIndex) => {
-          if (!button.visibleOn.includes(tab)) {
-            return null
-          }
-          return (
-            <button
-              key={button.key}
-              type="button"
-              data-testid={`key-${button.key}`}
-              aria-label={
-                button.key === KeypadKey.Backspace
-                  ? tab === Tab.History
-                    ? 'Delete selected record'
-                    : 'Backspace'
-                  : undefined
-              }
-              disabled={!button.enabledOn.includes(tab)}
-              style={{ gridRow: rowIndex + 1, gridColumn: columnIndex + 1 }}
-              className={classNames(styles.key, button.className)}
-              onClick={() => onKeyPress(button.key)}
-            >
-              {button.key === KeypadKey.Backspace ? (
-                <Icon type="back" width={43} height={29} />
-              ) : (
-                button.label
-              )}
-            </button>
-          )
-        }),
-      )}
+      <AnimatePresence initial={false}>
+        {ROWS.flatMap((row, rowIndex) =>
+          row.map(
+            (button, columnIndex) =>
+              button.visibleOn.includes(tab) && (
+                <Key
+                  key={button.key}
+                  button={button}
+                  tab={tab}
+                  gridRow={rowIndex + 1}
+                  gridColumn={columnIndex + 1}
+                  onKeyPress={onKeyPress}
+                />
+              ),
+          ),
+        )}
+      </AnimatePresence>
     </div>
   )
 }

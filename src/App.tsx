@@ -5,8 +5,10 @@ import { convert, formatMoney, parseAmount } from './money'
 import { KeypadKey, Tab, type HistoryRecord } from './model'
 import { useQuoteQuery, useRatesQuery } from './api'
 import styles from './App.module.css'
+import { MotionConfig, useReducedMotion } from 'motion/react'
 
 export default function App() {
+  const reducedMotion = useReducedMotion()
   const [tab, setTab] = useState<Tab>(Tab.Exchange)
   const [amount, setAmount] = useState('0')
   const [selectedFrom, setFrom] = useState<string>()
@@ -61,7 +63,7 @@ export default function App() {
         if (tab === Tab.Exchange) {
           setHistory((prev) => [
             ...prev,
-            { from, to, amount: formatMoney(parseAmount(amount)), result },
+            { id: crypto.randomUUID(), from, to, amount: formatMoney(parseAmount(amount)), result },
           ])
         }
         break
@@ -85,30 +87,34 @@ export default function App() {
   }
 
   return (
-    <div className={styles.app}>
-      <Tabs className={styles.tabs} tab={tab} onTabChange={setTab} />
+    <MotionConfig
+      reducedMotion="user"
+      transition={{ duration: reducedMotion ? 0 : 0.1, ease: 'easeInOut' }}
+    >
+      <div className={styles.app}>
+        <Tabs className={styles.tabs} tab={tab} onTabChange={setTab} />
+        {tab === Tab.Exchange && (
+          <ExchangePanel
+            className={styles.exchange}
+            currencies={currencies}
+            from={from}
+            to={to}
+            amount={amount}
+            result={result}
+            isFetching={quoteQuery.isFetching}
+            quoteCreatedAt={quote?.createdAt}
+            onFromChange={setFrom}
+            onToChange={setTo}
+            onRefresh={() => void quoteQuery.refetch()}
+          />
+        )}
 
-      {tab === Tab.Exchange && (
-        <ExchangePanel
-          className={styles.exchange}
-          currencies={currencies}
-          from={from}
-          to={to}
-          amount={amount}
-          result={result}
-          isFetching={quoteQuery.isFetching}
-          quoteCreatedAt={quote?.createdAt}
-          onFromChange={setFrom}
-          onToChange={setTo}
-          onRefresh={() => void quoteQuery.refetch()}
-        />
-      )}
+        {tab === Tab.History && (
+          <HistoryPanel className={styles.history} history={history} selected={selected} />
+        )}
 
-      {tab === Tab.History && (
-        <HistoryPanel className={styles.history} history={history} selected={selected} />
-      )}
-
-      <Keypad className={styles.keypad} tab={tab} onKeyPress={handleKeyPress} />
-    </div>
+        <Keypad className={styles.keypad} tab={tab} onKeyPress={handleKeyPress} />
+      </div>
+    </MotionConfig>
   )
 }

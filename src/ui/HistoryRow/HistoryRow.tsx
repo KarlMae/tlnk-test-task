@@ -1,4 +1,5 @@
-import { type BaseHTMLAttributes, useState } from 'react'
+import type { BaseHTMLAttributes } from 'react'
+import { motion, useIsPresent } from 'motion/react'
 import classNames from 'classnames'
 import type { HistoryRecord } from '../../model'
 import styles from './HistoryRow.module.css'
@@ -13,14 +14,18 @@ function formatRecord(record: HistoryRecord): string {
 }
 
 export function HistoryRow({ record, selected }: Props) {
-  const [label] = useState(() => formatRecord(record))
+  const isPresent = useIsPresent()
   return (
-    <li
+    <motion.li
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, height: 0 }}
+      aria-hidden={!isPresent}
       data-testid="history-item"
       aria-selected={selected}
       className={classNames(styles.row, { [styles.selected]: selected })}
     >
-      {label}
-    </li>
+      {formatRecord(record)}
+    </motion.li>
   )
 }
