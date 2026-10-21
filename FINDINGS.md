@@ -5,6 +5,9 @@
 All the technologies I opted for and will mention later have been used in my personal projects
 and have proved useful.
 
+Some of the libraries, like date-fns are a bit of an overkill for an application this size, but
+I took this test example as an opportunity to rather show more than less. One technology I decided
+against though was Nx. This would have actually been too much for now.
 
 ## User complaints
 
