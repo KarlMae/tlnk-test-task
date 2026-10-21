@@ -1,3 +1,5 @@
+import type { Quote } from '../api'
+
 export function parseAmount(value: string): number {
   return parseFloat(value)
 }
@@ -11,4 +13,8 @@ export function formatMoney(value: number): string {
   const withThousands = Number(intPart).toLocaleString('en-US')
   const trimmedFrac = fracPart.replace(/0+$/, '')
   return trimmedFrac ? `${withThousands}.${trimmedFrac}` : withThousands
+}
+
+export function formatQuoteResult(quote: Quote | undefined): string {
+  return quote ? formatMoney(convert(quote.amount, quote.rate)) : '0'
 }

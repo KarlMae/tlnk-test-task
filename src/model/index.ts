@@ -1,5 +1,6 @@
 export * from './apiClient'
 export * from './apiError'
+export * from './conversion'
 export * from './historyRecord'
 export * from './keypad'
 export * from './tab'

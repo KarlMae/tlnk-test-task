@@ -7,7 +7,7 @@ import { LastUpdated } from '../LastUpdated/LastUpdated'
 import { Icon } from '../Icon/Icon'
 import { FitText } from '../FitText/FitText'
 
-type Props = BaseHTMLAttributes<HTMLDivElement> & {
+interface Exchange {
   readonly currencies: readonly string[]
   readonly from: string | undefined
   readonly to: string | undefined
@@ -20,19 +20,24 @@ type Props = BaseHTMLAttributes<HTMLDivElement> & {
   readonly onRefresh: () => void
 }
 
-export function ExchangePanel({
-  className,
-  currencies,
-  from,
-  to,
-  amount,
-  result,
-  isFetching,
-  quoteCreatedAt,
-  onFromChange,
-  onToChange,
-  onRefresh,
-}: Props) {
+type Props = BaseHTMLAttributes<HTMLDivElement> & {
+  readonly exchange: Exchange
+}
+
+export function ExchangePanel({ className, exchange }: Props) {
+  const {
+    currencies,
+    from,
+    to,
+    amount,
+    result,
+    isFetching,
+    quoteCreatedAt,
+    onFromChange,
+    onToChange,
+    onRefresh,
+  } = exchange
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

@@ -1,7 +1,5 @@
-export interface HistoryRecord {
+import type { Conversion } from './conversion'
+
+export interface HistoryRecord extends Conversion {
   readonly id: string
-  readonly from: string
-  readonly to: string
-  readonly amount: string
-  readonly result: string
 }

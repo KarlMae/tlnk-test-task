@@ -1,6 +1,6 @@
 import { type BaseHTMLAttributes, useEffect, useState } from 'react'
 import { parseISO } from 'date-fns'
-import { formatTimeAgo } from '../../time'
+import { formatTimeAgo } from '../../formatters/time'
 
 const SECOND_IN_MS = 1000
 

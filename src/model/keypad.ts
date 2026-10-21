@@ -18,3 +18,19 @@ export enum KeypadKey {
   Down = 'down',
   Ok = 'ok',
 }
+
+export const AMOUNT_KEYS = [
+  KeypadKey.Zero,
+  KeypadKey.One,
+  KeypadKey.Two,
+  KeypadKey.Three,
+  KeypadKey.Four,
+  KeypadKey.Five,
+  KeypadKey.Six,
+  KeypadKey.Seven,
+  KeypadKey.Eight,
+  KeypadKey.Nine,
+  KeypadKey.DoubleZero,
+] as const
+
+export type AmountKey = (typeof AMOUNT_KEYS)[number]
