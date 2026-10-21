@@ -12,4 +12,16 @@
   background: none;
   border: none;
   font-size: 40px;
+
+  &:disabled {
+    opacity: 20%;
+  }
+}
+
+.clear {
+  color: var(--color-clear);
+}
+
+.delete {
+  color: var(--color-delete);
 }

@@ -1,9 +1,20 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  align-items: center;
+  gap: 12px;
 
-  padding: 24px 32px;
+  padding: 16px 32px;
+}
+
+.values {
+  flex: 1 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
 }
 
 .row {
@@ -24,9 +35,25 @@
   text-align: right;
 }
 
-.refreshButton {
+.refresh {
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+
+  font-size: 10px;
+
   background: none;
   border: none;
-  font-size: 16px;
   cursor: pointer;
+}
+
+.refreshIcon {
+  height: 12px;
+  width: 12px;
+}
+
+.loader {
+  height: 14px;
+  font-size: 10px;
+  text-align: center;
 }

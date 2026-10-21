@@ -12,12 +12,12 @@ type Props = BaseHTMLAttributes<HTMLDivElement> & {
 export function HistoryPanel({ className, history, selected }: Props) {
   return (
     <div className={classNames(className, styles.panel)}>
-      <ul>
+      <ul className={styles.list}>
         {history.map((record, i) => (
           <HistoryRow key={i} record={record} selected={i === selected} />
         ))}
       </ul>
-      <p data-testid="history-count">{history.length} records</p>
+      <p data-testid="history-count" className={styles.count}>{history.length} records</p>
     </div>
   )
 }

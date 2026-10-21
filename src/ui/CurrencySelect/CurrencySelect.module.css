@@ -1,6 +1,9 @@
 .select {
+  width: fit-content;
+
   background: none;
   border: none;
-  font-size: 22px;
   appearance: none;
+
+  font-size: 22px;
 }

@@ -10,17 +10,16 @@
 }
 
 .tabs {
-
+  flex: 0 0 auto;
 }
 
-.exchange {
-  flex: 0 0 auto;
+.exchange,
+.history {
+  flex: 0 0 30dvh;
+
   width: 100%;
   max-width: 480px;
-}
-
-.history {
-  flex: 1 0 auto;
+  min-height: 0;
 }
 
 .keypad {

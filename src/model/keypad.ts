@@ -18,9 +18,3 @@ export enum KeypadKey {
   Down = 'down',
   Ok = 'ok',
 }
-
-export interface KeypadButton {
-  readonly key: KeypadKey
-  readonly label: string
-  readonly historyOnly?: boolean
-}
