@@ -19,10 +19,17 @@ export function useHistory() {
 
   const add = (conversion: Conversion) =>
     setRecords((prev) => [...prev, { id: crypto.randomUUID(), ...conversion }])
-  const removeSelected = () => setRecords((prev) => prev.filter((_, i) => i !== selectedIndex))
-  const clear = () => setRecords([])
+  const removeSelected = () => {
+    setRecords((prev) => prev.filter((_, i) => i !== selectedIndex))
+    setSelectedIndex((prev) => Math.max(0, Math.min(prev, records.length - 2)))
+  }
+  const clear = () => {
+    setRecords([])
+    setSelectedIndex(0)
+  }
   const selectPrevious = () => setSelectedIndex((prev) => Math.max(0, prev - 1))
-  const selectNext = () => setSelectedIndex((prev) => Math.min(records.length - 1, prev + 1))
+  const selectNext = () =>
+    setSelectedIndex((prev) => Math.max(0, Math.min(records.length - 1, prev + 1)))
 
   return {
     records,

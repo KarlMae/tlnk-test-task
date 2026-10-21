@@ -32,7 +32,7 @@ const ROWS: KeypadButton[][] = [
       key: KeypadKey.Backspace,
       label: '⌫',
       visibleOn: [Tab.Exchange, Tab.History],
-      enabledOn: [Tab.Exchange],
+      enabledOn: [Tab.Exchange, Tab.History],
       className: styles.delete,
     },
     {
