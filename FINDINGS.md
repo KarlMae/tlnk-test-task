@@ -1,7 +1,10 @@
 # Findings
 
+## Sidenote
+
 All the technologies I opted for and will mention later have been used in my personal projects
 and have proved useful.
+
 
 ## User complaints
 
@@ -26,6 +29,7 @@ It can be seen as overkill for this application but seeing as a bug was directly
 #### Second user complaint
 Honestly, the second user complaint was something that AI pointed out even before I started to debug it.
 The value was stored as a string, which made 1,000 render as 1.
+
 
 ## Code style
 
@@ -63,3 +67,20 @@ Just code smell.
 
 #### Index used as a key in DOM iteration
 This could also be listed as a bug. Keys should be static distinct properties of the items rendered.
+
+#### Rendering the date
+In the demo app, the date was rendered incorrectly.
+The date is returned in ISO 8601. I pulled in date-fns for reliable declarative date handling.
+
+#### Quote interface and expiresAt
+The field expiresAt was not used in the provided code. Tanstack Query made using it quite straight forward.
+
+
+## Deviations from Figma
+
+The shared Figma spec was probably hastily put together so most distances were not reliable.
+In most cases I rounded to the nearest factor of 8 or in some cases 4.
+
+One thing that deviates from what's presented and would usually warrant a sync with a designer is the way
+minutes are rendered. Since rendering minutes as "min" would have required one-off string manipulations
+I deemed going with the default string "minutes" to be the more sensible option.
