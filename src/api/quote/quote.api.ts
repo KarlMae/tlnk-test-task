@@ -1,4 +1,4 @@
-import { skipToken, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query'
 import { differenceInMilliseconds, parseISO } from 'date-fns'
 import { useApiClient } from '../../data-access'
 import type { ApiClient } from '../../model'

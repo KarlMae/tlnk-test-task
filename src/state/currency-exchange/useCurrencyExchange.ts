@@ -4,6 +4,9 @@ import { formatQuoteResult, parseAmount } from '../../formatters/money'
 import { AMOUNT_KEYS, KeypadKey, Tab } from '../../model'
 import { useAmountInput } from '../amount-input/amountInput'
 import { useHistory } from '../history/useHistory'
+import { useDebouncedValue } from '../useDebouncedValue'
+
+const SECOND_IN_MS = 1_000
 
 type KeyActions = Partial<Record<KeypadKey, () => void>>
 
@@ -12,6 +15,9 @@ export function useCurrencyExchange() {
   const [selectedFrom, setFrom] = useState<string>()
   const [selectedTo, setTo] = useState<string>()
   const amountInput = useAmountInput()
+  const amount = parseAmount(amountInput.amount)
+  const debouncedAmount = useDebouncedValue(amount, SECOND_IN_MS)
+  const isDebouncing = amount !== debouncedAmount
   const history = useHistory()
 
   const ratesQuery = useRatesQuery()
@@ -20,20 +26,23 @@ export function useCurrencyExchange() {
   const to = selectedTo ?? currencies[1]
 
   const quoteQuery = useQuoteQuery(
-    from && to ? { from, to, amount: parseAmount(amountInput.amount) } : undefined,
+    from && to && !isDebouncing ? { from, to, amount: debouncedAmount } : undefined,
   )
   const result = formatQuoteResult(quoteQuery.data)
 
-  const refresh = () => void quoteQuery.refetch()
+  const refresh = () => {
+    if (!isDebouncing) void quoteQuery.refetch()
+  }
 
   const hasQuote = quoteQuery.data !== undefined
 
   const saveCurrentConversion = () => {
-    if (!hasQuote) return
+    const quote = quoteQuery.data
+    if (!quote) return
     history.add({
-      from,
-      to,
-      amount: parseAmount(amountInput.amount),
+      from: quote.from,
+      to: quote.to,
+      amount: quote.amount,
       result,
     })
   }
@@ -77,7 +86,7 @@ export function useCurrencyExchange() {
     to,
     amount: amountInput.amount,
     result,
-    isFetching: quoteQuery.isFetching,
+    isFetching: isDebouncing || quoteQuery.isFetching,
     quoteCreatedAt: quoteQuery.data?.createdAt,
     onFromChange: setFrom,
     onToChange: setTo,

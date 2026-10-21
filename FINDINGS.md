@@ -34,6 +34,14 @@ Honestly, the second user complaint was something that AI pointed out even befor
 The value was stored as a string, which made 1,000 render as 1.
 
 
+## Other issues
+
+#### No debounce on keypresses
+In the provided project each keystroke meant a new request. Best practice is to debounce the requests
+to save resources of both the server and the application. For normal keyboard applications I would use 200ms for
+the debounce duration. For this application a longer duration would make sense as the typing on screen would be slower.
+
+
 ## Code style
 
 #### npm should be replaced with pnpm for added security.

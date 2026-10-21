@@ -2,7 +2,7 @@ import { type BaseHTMLAttributes, useEffect, useState } from 'react'
 import { parseISO } from 'date-fns'
 import { formatTimeAgo } from '../../formatters/time'
 
-const SECOND_IN_MS = 1000
+const SECOND_IN_MS = 1_000
 
 type Props = BaseHTMLAttributes<HTMLDivElement> & {
   readonly updatedAt: string
@@ -17,8 +17,6 @@ export function LastUpdated({ updatedAt }: Props) {
   }, [])
 
   return (
-    <span data-testid="updated-at">
-      Last updated {formatTimeAgo(parseISO(updatedAt), now)}
-    </span>
+    <span data-testid="updated-at">Last updated {formatTimeAgo(parseISO(updatedAt), now)}</span>
   )
 }
