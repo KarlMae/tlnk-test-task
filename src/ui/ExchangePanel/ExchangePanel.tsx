@@ -64,7 +64,17 @@ function ExchangePanelContent({ exchange }: { readonly exchange: Exchange }) {
 }
 
 function ExchangeForm({ exchange }: { readonly exchange: Exchange }) {
-  const { currencies, from, to, amount, result, isFetching, onFromChange, onToChange } = exchange
+  const {
+    currencies,
+    from,
+    to,
+    amount,
+    result,
+    isFetching,
+    quoteFailed,
+    onFromChange,
+    onToChange,
+  } = exchange
 
   return (
     <>
@@ -99,7 +109,7 @@ function ExchangeForm({ exchange }: { readonly exchange: Exchange }) {
             />
           ) : (
             <FitText data-testid="result" className={styles.amount}>
-              {result}
+              {quoteFailed ? '' : result}
             </FitText>
           )}
         </div>

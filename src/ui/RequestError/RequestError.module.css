@@ -1,18 +1,31 @@
 .error {
   display: flex;
   align-items: center;
-  gap: 8px;
-
-  color: var(--color-fgError);
-  font-size: 10px;
+  justify-content: center;
 }
 
 .retry {
-  color: var(--color-fgSelected);
-  font-size: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+
+  font-size: 10px;
 
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.message {
+  color: var(--color-fgError);
+}
+
+.retry:hover .action {
   text-decoration: underline;
+}
+
+.icon {
+  height: 12px;
+  width: 12px;
 }

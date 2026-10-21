@@ -4,7 +4,7 @@
   align-items: center;
   gap: 12px;
 
-  padding: 16px 32px;
+  padding: 16px 32px 4px;
 }
 
 .values {
@@ -50,6 +50,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  padding: 12px;
 }
 
 .hidden {

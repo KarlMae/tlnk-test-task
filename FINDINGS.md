@@ -44,6 +44,11 @@ In the provided project each keystroke meant a new request. Best practice is to 
 to save resources of both the server and the application. For normal keyboard applications I would use 200ms for
 the debounce duration. For this application a longer duration would make sense as the typing on screen would be slower.
 
+#### UX improvement for refetch button
+
+In the provided project the refresh button was used to refetch data. It's quite a small tap area.
+To improve the UX I made the entire row clickable and added padding.
+
 ## Code style
 
 #### npm should be replaced with pnpm for added security.
