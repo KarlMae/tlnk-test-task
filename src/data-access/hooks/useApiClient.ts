@@ -1,4 +1,7 @@
-import { useMemo } from 'react'
+import { createContext, use } from 'react'
+import type { ApiClient } from '../../model'
 import { createHttpClient } from '../clients/apiClient'
 
-export const useApiClient = () => useMemo(() => createHttpClient(), [])
+export const ApiClientContext = createContext<ApiClient>(createHttpClient())
+
+export const useApiClient = () => use(ApiClientContext)

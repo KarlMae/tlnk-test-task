@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { type AmountKey } from '../../model'
+import { type AmountKey, KeypadKey } from '../../model'
 
 const INITIAL_AMOUNT = '0'
 
 export function useAmountInput() {
   const [amount, setAmount] = useState(INITIAL_AMOUNT)
 
+  const replaceInitialAmount = (key: AmountKey) =>
+    key === KeypadKey.DoubleZero ? INITIAL_AMOUNT : key
+
   const appendAmountKey = (amount: string, key: AmountKey) =>
-    amount === INITIAL_AMOUNT ? key : amount + key
+    amount === INITIAL_AMOUNT ? replaceInitialAmount(key) : amount + key
 
   const appendDot = (amount: string) => (amount.includes('.') ? amount : `${amount}.`)
 
