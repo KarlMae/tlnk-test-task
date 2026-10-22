@@ -8,11 +8,10 @@ export function convert(amount: number, rate: string): number {
   return amount * parseFloat(rate)
 }
 
+const moneyFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+
 export function formatMoney(value: number): string {
-  const [intPart, fracPart] = value.toFixed(2).split('.')
-  const withThousands = Number(intPart).toLocaleString('en-US')
-  const trimmedFrac = fracPart.replace(/0+$/, '')
-  return trimmedFrac ? `${withThousands}.${trimmedFrac}` : withThousands
+  return moneyFormat.format(value)
 }
 
 export function formatQuoteResult(quote: Quote | undefined): string {

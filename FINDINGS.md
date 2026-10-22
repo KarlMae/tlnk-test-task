@@ -53,6 +53,14 @@ the debounce duration. For this application a longer duration would make sense a
 In the provided project the refresh button was used to refetch data. It's quite a small tap area.
 To improve the UX I made the entire row clickable and added padding.
 
+#### Tests were forced to pass even with a bug
+
+The money.ts module contained a bug caused by naive number -> string conversion. This bug was
+hidden from the tests by overwriting the function to return a static value.
+
+The bug was fixed by using the Intl API, the overwrite in the testable module was removed so the
+test wouldn't lie anymore.
+
 ## Code style
 
 #### npm should be replaced with pnpm for added security.
