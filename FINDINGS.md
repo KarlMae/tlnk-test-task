@@ -36,6 +36,10 @@ It can be seen as overkill for this application but seeing as a bug was directly
 Honestly, the second user complaint was something that AI pointed out even before I started to debug it.
 The value was stored as a string, which made 1,000 render as 1.
 
+To fix it I saved the value as a number instead of a string.
+Usually money should be separated into the full part and cents, but I kept to the backend of a
+single decimal number.
+
 ## Other issues
 
 #### No debounce on keypresses
